@@ -8,6 +8,7 @@ Lin Cheng 2018.01.15
 ## package input
 import gym
 import numpy as np
+# from DDQN_tensorflow_newVersion import Dueling_DQN_method
 from DDQN_tensorflow import Dueling_DQN_method
 import matplotlib.pyplot as plt
 

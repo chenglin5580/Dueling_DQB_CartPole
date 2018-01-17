@@ -3,8 +3,10 @@
 ## package input
 import gym
 import numpy as np
+# from DDQN_tensorflow_newVersion import Dueling_DQN_method
 from DDQN_tensorflow import Dueling_DQN_method
 import matplotlib.pyplot as plt
+
 
 
 env = gym.make('CartPole-v0')
@@ -25,8 +27,6 @@ for ep in range(10):
 
         action = RL_agent.chose_action(state_now, train=False)
         # action = env.action_space.sample()
-
-        #hh
 
         # print(action)
         state_next, reward, done, _  = env.step(action)
