@@ -8,7 +8,7 @@ Lin Cheng 2018.01.15
 ## package input
 import gym
 import numpy as np
-from DQN_method_keras import Dueling_DQN_method
+from DDQN_tensorflow import DQN_method
 import matplotlib.pyplot as plt
 
 # 导入environment
@@ -23,11 +23,10 @@ print(state_dim)
 
 #
 
-Dueling_DQN = Dueling_DQN_method(action_dim, state_dim, reload_flag=True)
-
+RL_method = DQN_method(action_dim, state_dim)
 
 def train(RL):
-    max_ep =120
+    max_ep = 120
     acc_step = np.zeros((max_ep))
     for ep in range(max_ep):
         state_now = env.reset()
@@ -36,7 +35,8 @@ def train(RL):
         for step in range(5000):
             env.render()
 
-            action = Dueling_DQN.chose_action(state_now, train=False)
+            action = RL_method.chose_action(state_now, train=True)
+            # action = env.action_space.sample()
 
             # print(action)
             state_next, reward, done, _ = env.step(action)
@@ -48,6 +48,14 @@ def train(RL):
             reward = r1 + r2
             # reward = -100 if done else reward
 
+            # store memory
+            RL_method.memory_store(state_now, action, reward, state_next, done)
+
+            # learn
+            # if RL_agent.memory_counter > RL_agent.memory_size:
+            if RL_method.memory_counter > 1000:
+                RL_method.Learn()
+
             # state update
             state_now = state_next
 
@@ -57,12 +65,12 @@ def train(RL):
                 # plt.pause(0.1)
                 acc_step[ep] = np.array((step))
                 print("episode: {}/{}, score: {}，epsilon:{}"
-                      .format(ep, 300, step, Dueling_DQN.epsilon))
+                      .format(ep, 300, step, RL_method.epsilon))
                 break
-    Dueling_DQN.data_save()
+    RL_method.model_save()
     return acc_step
 
-acc_step = train(Dueling_DQN)
+acc_step = train(RL_method)
 
 plt.figure(1)
 plt.plot(acc_step)

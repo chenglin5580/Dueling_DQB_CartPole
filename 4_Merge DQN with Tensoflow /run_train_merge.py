@@ -8,7 +8,7 @@ Lin Cheng 2018.01.15
 ## package input
 import gym
 import numpy as np
-from DQN_method_keras import Dueling_DQN_method
+from DDQN_tensorflow import DQN_method, Doubel_DQN_method, Dueling_DQN_method
 import matplotlib.pyplot as plt
 
 # 导入environment
@@ -22,10 +22,17 @@ state_dim = env.observation_space.shape[0]
 print(state_dim)
 
 #
+method_flag = 3
 
-Dueling_DQN = Dueling_DQN_method(action_dim, state_dim)
+if method_flag == 1:
+    RL_agent = DQN_method(action_dim, state_dim)
+elif method_flag == 2:
+    RL_agent = Doubel_DQN_method(action_dim, state_dim)
+else:
+    RL_agent = Dueling_DQN_method(action_dim, state_dim)
 
-def train(RL):
+
+def train(RL_agent):
     max_ep = 120
     acc_step = np.zeros((max_ep))
     for ep in range(max_ep):
@@ -35,7 +42,7 @@ def train(RL):
         for step in range(5000):
             env.render()
 
-            action = Dueling_DQN.chose_action(state_now, train=True)
+            action = RL_agent.chose_action(state_now, train=True)
             # action = env.action_space.sample()
 
             # print(action)
@@ -49,12 +56,12 @@ def train(RL):
             # reward = -100 if done else reward
 
             # store memory
-            Dueling_DQN.memory_store(state_now, action, reward, state_next, done)
+            RL_agent.memory_store(state_now, action, reward, state_next, done)
 
             # learn
             # if RL_agent.memory_counter > RL_agent.memory_size:
-            if Dueling_DQN.memory_counter > 1000:
-                Dueling_DQN.Learn()
+            if RL_agent.memory_counter > 1000:
+                RL_agent.Learn()
 
             # state update
             state_now = state_next
@@ -65,12 +72,12 @@ def train(RL):
                 # plt.pause(0.1)
                 acc_step[ep] = np.array((step))
                 print("episode: {}/{}, score: {}，epsilon:{}"
-                      .format(ep, 300, step, Dueling_DQN.epsilon))
+                      .format(ep, 300, step, RL_agent.epsilon))
                 break
-    Dueling_DQN.model_save()
+    RL_agent.model_save()
     return acc_step
 
-acc_step = train(Dueling_DQN)
+acc_step = train(RL_agent)
 
 plt.figure(1)
 plt.plot(acc_step)

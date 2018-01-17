@@ -1,0 +1,2 @@
+model_checkpoint_path: "/home/lynn/PycharmProjects/Dueling_DQN_Cartpole/3_Dueling DQN with Tensoflow/data.chkp"
+all_model_checkpoint_paths: "/home/lynn/PycharmProjects/Dueling_DQN_Cartpole/3_Dueling DQN with Tensoflow/data.chkp"

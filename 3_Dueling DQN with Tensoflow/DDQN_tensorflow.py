@@ -2,7 +2,7 @@
 import numpy as np
 np.random.seed(1337)  # for reproducibility
 import tensorflow as tf
-tf.set_random_seed(1)
+tf.set_random_seed(5)
 import sys
 
 
