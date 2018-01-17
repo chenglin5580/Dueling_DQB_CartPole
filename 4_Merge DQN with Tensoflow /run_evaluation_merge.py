@@ -15,7 +15,7 @@ action_dim = env.action_space.n
 state_dim = env.observation_space.shape[0]
 
 #
-method_flag = 3
+method_flag = 3 #hhh
 
 if method_flag == 1:
     RL_agent = DQN_method(action_dim, state_dim, reload_flag=True)
